@@ -11,39 +11,23 @@ namespace SimuladorPET.DadosEnvio
     {
         private static List<Double> Location = new List<double>();
 
-
         public List<Double> Lacalizacao()
         {
-
-            GeoCoordinateWatcher _watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
-           // _watcher.Start();
-            // 
-            _watcher.TryStart(true, TimeSpan.FromMilliseconds(600));
-
-            _watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(LocationWatcher_PositionChanged);
-
-
-            //Console.WriteLine(_watcher.Position.Location.Latitude.ToString());
-            // Console.WriteLine(coord.Longitude.ToString());
-
+            GeoCoordinateWatcher watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+            // _watcher.Start();
+            watcher.TryStart(true, TimeSpan.FromMilliseconds(600));
+            watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(LocationWatcher_PositionChanged);
             return Location;
         }
 
         static void LocationWatcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
-            
             if (e.Position.Location != GeoCoordinate.Unknown)
             {
-                
-                //Console.WriteLine((sender as GeoCoordinateWatcher).MovementThreshold);
-
                 Location.Clear();
                 Location.Add(e.Position.Location.Latitude);//[0] Latitude
                 Location.Add(e.Position.Location.Longitude);//[1] Longitude
-                return;               
             }
-
         }
-
     }
 }
